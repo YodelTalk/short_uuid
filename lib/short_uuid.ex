@@ -2,9 +2,12 @@ defmodule ShortUUID do
   @moduledoc """
   ShortUUID allows UUIDs to be encoded in a more URL- and user-friendly Base58 format:
 
-  `http://example.com/64d7280f-736a-4ffa-b9c0-383f43486d0b`
-  becomes
-  `http://example.com/DTEETeS5R2XxjrVTZxXoJS`
+      iex> ShortUUID.encode("64d7280f-736a-4ffa-b9c0-383f43486d0b")
+      "DTEETeS5R2XxjrVTZxXoJS"
+
+      iex> ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS")
+      "64d7280f-736a-4ffa-b9c0-383f43486d0b"
+
   """
 
   @abc ["1", "2", "3", "4", "5", "6", "7", "8", "9"] ++
@@ -19,9 +22,13 @@ defmodule ShortUUID do
   @doc """
   Encodes the given UUID into a ShortUUID.
 
-    iex> ShortUUID.encode("64d7280f-736a-4ffa-b9c0-383f43486d0b")
-    "DTEETeS5R2XxjrVTZxXoJS"
+  ## Examples
+
+      iex> ShortUUID.encode("64d7280f-736a-4ffa-b9c0-383f43486d0b")
+      "DTEETeS5R2XxjrVTZxXoJS"
+
   """
+  @spec encode(String.t()) :: String.t()
   def encode(input) when is_binary(input) do
     input
     |> String.replace("-", "")
@@ -42,9 +49,13 @@ defmodule ShortUUID do
   @doc """
   Decodes the given ShortUUID back into a UUID.
 
-    iex> ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS")
-    "64d7280f-736a-4ffa-b9c0-383f43486d0b"
+  ## Examples
+
+      iex> ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS")
+      "64d7280f-736a-4ffa-b9c0-383f43486d0b"
+
   """
+  @spec decode(String.t()) :: String.t()
   def decode(input) when is_binary(input) do
     input
     |> String.codepoints()

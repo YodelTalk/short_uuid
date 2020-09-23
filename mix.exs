@@ -7,7 +7,11 @@ defmodule ShortUuid.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+
+      # Docs
+      name: "ShortUUID",
+      source_url: "https://github.com/YodelTalk/short_uuid"
     ]
   end
 
@@ -21,6 +25,7 @@ defmodule ShortUuid.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ex_doc, "~> 0.22", only: :dev, runtime: false},
       {:stream_data, "~> 0.1", only: :test}
     ]
   end
