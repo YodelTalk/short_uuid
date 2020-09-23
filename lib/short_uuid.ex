@@ -1,6 +1,6 @@
 defmodule ShortUUID do
   @moduledoc """
-  ShortUUIDs allow UUIDs to be encoded in a more URL- and user-friendly Base58 format:
+  ShortUUID allows UUIDs to be encoded in a more URL- and user-friendly Base58 format:
 
   `http://example.com/64d7280f-736a-4ffa-b9c0-383f43486d0b`
   becomes

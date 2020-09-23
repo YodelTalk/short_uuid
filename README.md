@@ -1,6 +1,6 @@
 # ShortUUID ([Documentation](https://hexdocs.pm/short_uuid))
 
-ShortUUIDs allow UUIDs to be encoded in a more URL- and user-friendly Base58
+ShortUUID allows UUIDs to be encoded in a more URL- and user-friendly Base58
 format:
 
 ```elixir
