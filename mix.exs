@@ -8,6 +8,8 @@ defmodule ShortUuid.MixProject do
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      description: description(),
+      package: package(),
 
       # Docs
       name: "ShortUUID",
@@ -17,8 +19,20 @@ defmodule ShortUuid.MixProject do
 
   # Run "mix help compile.app" to learn about applications.
   def application do
+    []
+  end
+
+  defp description do
+    """
+    ShortUUID allows UUIDs to be encoded in a more URL- and user-friendly Base58 format.
+    """
+  end
+
+  defp package do
     [
-      extra_applications: []
+      maintainers: ["Mario Uher"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/YodelTalk/short_uuid"}
     ]
   end
 
