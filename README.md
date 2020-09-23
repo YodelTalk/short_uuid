@@ -1,11 +1,19 @@
-# ShortUuid
+# ShortUUID ([Documentation](https://hexdocs.pm/short_uuid))
 
-**TODO: Add description**
+ShortUUIDs allow UUIDs to be encoded in a more URL- and user-friendly Base58
+format:
+
+```elixir
+ShortUUID.encode("64d7280f-736a-4ffa-b9c0-383f43486d0b")
+# "DTEETeS5R2XxjrVTZxXoJS"
+
+ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS")
+# "64d7280f-736a-4ffa-b9c0-383f43486d0b"
+```
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `short_uuid` to your list of dependencies in `mix.exs`:
+Add `short_uuid` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -15,7 +23,6 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/short_uuid](https://hexdocs.pm/short_uuid).
+## License
 
+MIT
