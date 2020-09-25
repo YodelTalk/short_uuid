@@ -1,7 +1,5 @@
 # ShortUUID
 
-
-
 ShortUUID ([docs](https://hexdocs.pm/short_uuid)) allows UUIDs to be encoded in a more URL- and user-friendly Base58
 format:
 
