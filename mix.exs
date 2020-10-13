@@ -1,4 +1,4 @@
-defmodule ShortUuid.MixProject do
+defmodule ShortUUID.MixProject do
   use Mix.Project
 
   def project do
