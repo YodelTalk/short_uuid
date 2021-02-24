@@ -3,10 +3,10 @@ defmodule ShortUUID do
   ShortUUID allows UUIDs to be encoded in a more URL- and user-friendly Base58 format:
 
       iex> ShortUUID.encode("64d7280f-736a-4ffa-b9c0-383f43486d0b")
-      "DTEETeS5R2XxjrVTZxXoJS"
+      {:ok, "DTEETeS5R2XxjrVTZxXoJS"}
 
       iex> ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS")
-      "64d7280f-736a-4ffa-b9c0-383f43486d0b"
+      {:ok, "64d7280f-736a-4ffa-b9c0-383f43486d0b"}
 
   """
 
@@ -25,15 +25,24 @@ defmodule ShortUUID do
   ## Examples
 
       iex> ShortUUID.encode("64d7280f-736a-4ffa-b9c0-383f43486d0b")
-      "DTEETeS5R2XxjrVTZxXoJS"
+      {:ok, "DTEETeS5R2XxjrVTZxXoJS"}
+
+      iex> ShortUUID.encode("invalid-uuid-here")
+      {:error, :invalid_uuid}
 
   """
-  @spec encode(String.t()) :: String.t()
+  @spec encode(String.t()) :: {:error, :invalid_uuid} | {:ok, String.t()}
   def encode(input) when is_binary(input) do
-    input
-    |> String.replace("-", "")
-    |> String.to_integer(16)
-    |> encode("")
+    case input do
+      <<_a::64, ?-, _b::32, ?-, _c::32, ?-, _d::32, ?-, _e::96>> ->
+        input
+        |> String.replace("-", "")
+        |> String.to_integer(16)
+        |> encode("")
+
+      _ ->
+        {:error, :invalid_uuid}
+    end
   end
 
   defp encode(input, output) when input > 0 do
@@ -44,31 +53,46 @@ defmodule ShortUUID do
     encode(input, output)
   end
 
-  defp encode(0, output), do: output
+  defp encode(0, output), do: {:ok, output}
 
   @doc """
   Decodes the given ShortUUID back into a UUID.
 
   ## Examples
 
-      iex> ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS")
-      "64d7280f-736a-4ffa-b9c0-383f43486d0b"
+  iex> ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS")
+  {:ok, "64d7280f-736a-4ffa-b9c0-383f43486d0b"}
+
+  iex> ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS123")
+  {:error, :invalid_uuid}
+
+  iex> ShortUUID.decode("InvalidShortUUID")
+  {:error, :invalid_uuid}
 
   """
-  @spec decode(String.t()) :: String.t()
+  @spec decode(String.t()) :: {:error, :invalid_uuid} | {:ok, String.t()}
   def decode(input) when is_binary(input) do
-    input
-    |> String.codepoints()
-    |> Enum.reduce(0, fn codepoint, acc ->
-      acc * @abc_length + Enum.find_index(@abc, &(&1 == codepoint))
-    end)
-    |> Integer.to_string(16)
-    |> String.pad_leading(32, "0")
-    |> String.downcase()
-    |> format()
+    input = input |> String.codepoints()
+
+    if input |> Enum.any?(fn char -> !Enum.member?(@abc, char) end) do
+      {:error, :invalid_uuid}
+    else
+      input
+      |> Enum.reduce(0, fn codepoint, acc ->
+        acc * @abc_length + Enum.find_index(@abc, &(&1 == codepoint))
+      end)
+      |> Integer.to_string(16)
+      |> String.pad_leading(32, "0")
+      |> String.downcase()
+      |> format()
+    end
   end
 
   defp format(<<a::64, b::32, c::32, d::32, e::96>>) do
-    <<a::64, ?-, b::32, ?-, c::32, ?-, d::32, ?-, e::96>>
+    {:ok, <<a::64, ?-, b::32, ?-, c::32, ?-, d::32, ?-, e::96>>}
+  end
+
+  defp format(_) do
+    {:error, :invalid_uuid}
   end
 end
