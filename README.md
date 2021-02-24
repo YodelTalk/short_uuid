@@ -5,10 +5,10 @@ format:
 
 ```elixir
 ShortUUID.encode("64d7280f-736a-4ffa-b9c0-383f43486d0b")
-# "DTEETeS5R2XxjrVTZxXoJS"
+# {:ok, "DTEETeS5R2XxjrVTZxXoJS"}
 
 ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS")
-# "64d7280f-736a-4ffa-b9c0-383f43486d0b"
+# {:ok, "64d7280f-736a-4ffa-b9c0-383f43486d0b"}
 ```
 
 ## Installation
