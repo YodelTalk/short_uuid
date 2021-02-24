@@ -20,7 +20,7 @@ defmodule ShortUUIDTest do
     ]
 
     check all(uuid <- StreamData.map(StreamData.fixed_list(uuid_generator), &Enum.join/1)) do
-      assert uuid == ShortUUID.decode(ShortUUID.encode(uuid))
+      assert uuid == elem(ShortUUID.decode(elem(ShortUUID.encode(uuid), 1)), 1)
     end
   end
 end
