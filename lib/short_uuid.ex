@@ -72,12 +72,12 @@ defmodule ShortUUID do
   """
   @spec decode(String.t()) :: {:error, :invalid_uuid} | {:ok, String.t()}
   def decode(input) when is_binary(input) do
-    input = input |> String.codepoints()
+    codepoints = String.codepoints(input)
 
-    if input |> Enum.any?(fn char -> !Enum.member?(@abc, char) end) do
+    unless Enum.all?(codepoints, &(&1 in @abc)) do
       {:error, :invalid_uuid}
     else
-      input
+      codepoints
       |> Enum.reduce(0, fn codepoint, acc ->
         acc * @abc_length + Enum.find_index(@abc, &(&1 == codepoint))
       end)
