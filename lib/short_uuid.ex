@@ -74,7 +74,7 @@ defmodule ShortUUID do
   def decode(input) when is_binary(input) do
     input = input |> String.codepoints()
 
-    if input |> Enum.any?(fn(char) -> !Enum.member?(@abc, char) end) do
+    if input |> Enum.any?(fn char -> !Enum.member?(@abc, char) end) do
       {:error, :invalid_uuid}
     else
       input
