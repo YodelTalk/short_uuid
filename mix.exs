@@ -18,7 +18,7 @@ defmodule ShortUUID.MixProject do
       # Docs
       name: "ShortUUID",
       source_url: @url,
-      docs: [main: "ShortUUID"]
+      docs: [main: "ShortUUID", extras: ["README.md"]]
     ]
   end
 
