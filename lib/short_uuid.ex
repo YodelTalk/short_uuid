@@ -60,14 +60,14 @@ defmodule ShortUUID do
 
   ## Examples
 
-  iex> ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS")
-  {:ok, "64d7280f-736a-4ffa-b9c0-383f43486d0b"}
+      iex> ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS")
+      {:ok, "64d7280f-736a-4ffa-b9c0-383f43486d0b"}
 
-  iex> ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS123")
-  {:error, :invalid_uuid}
+      iex> ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS123")
+      {:error, :invalid_uuid}
 
-  iex> ShortUUID.decode("InvalidShortUUID")
-  {:error, :invalid_uuid}
+      iex> ShortUUID.decode("InvalidShortUUID")
+      {:error, :invalid_uuid}
 
   """
   @spec decode(String.t()) :: {:error, :invalid_uuid} | {:ok, String.t()}
