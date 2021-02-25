@@ -4,7 +4,7 @@ defmodule ShortUUID.MixProject do
   def project do
     [
       app: :short_uuid,
-      version: "1.0.0",
+      version: "2.0.0",
       elixir: ">= 1.5.3",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
