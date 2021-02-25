@@ -31,7 +31,7 @@ defmodule ShortUUID do
       {:error, :invalid_uuid}
 
   """
-  @spec encode(String.t()) :: {:ok, String.t()} | {:error, :invalid_uuid}
+  @spec encode(String.t()) :: {:ok, String.t()} | {:error, :invalid_uuid}
   def encode(input) when is_binary(input) do
     case input do
       <<_a::64, ?-, _b::32, ?-, _c::32, ?-, _d::32, ?-, _e::96>> ->
@@ -70,7 +70,7 @@ defmodule ShortUUID do
       {:error, :invalid_uuid}
 
   """
-  @spec decode(String.t()) :: {:ok, String.t()} | {:error, :invalid_uuid}
+  @spec decode(String.t()) :: {:ok, String.t()} | {:error, :invalid_uuid}
   def decode(input) when is_binary(input) do
     codepoints = String.codepoints(input)
 
