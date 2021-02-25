@@ -1,10 +1,14 @@
 defmodule ShortUUID.MixProject do
   use Mix.Project
 
+  @version "2.0.0"
+  @url "https://github.com/YodelTalk/short_uuid"
+  @maintainers ["Mario Uher"]
+
   def project do
     [
       app: :short_uuid,
-      version: "2.0.0",
+      version: @version,
       elixir: ">= 1.5.3",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -13,7 +17,8 @@ defmodule ShortUUID.MixProject do
 
       # Docs
       name: "ShortUUID",
-      source_url: "https://github.com/YodelTalk/short_uuid"
+      source_url: @url,
+      docs: [main: "ShortUUID"]
     ]
   end
 
@@ -30,9 +35,9 @@ defmodule ShortUUID.MixProject do
 
   defp package do
     [
-      maintainers: ["Mario Uher"],
+      maintainers: @maintainers,
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/YodelTalk/short_uuid"}
+      links: %{"GitHub" => @url}
     ]
   end
 
