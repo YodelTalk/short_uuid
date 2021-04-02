@@ -22,7 +22,7 @@ Add `short_uuid` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:short_uuid, "~> 2.0.0"}
+    {:short_uuid, "~> 2.1.0"}
   ]
 end
 ```
