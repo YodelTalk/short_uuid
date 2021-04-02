@@ -6,7 +6,7 @@ defmodule ShortUUIDTest do
 
   @abc Enum.concat([?0..?9, ?a..?f])
 
-  test "encode" do
+  test "encode/1" do
     uuid_generator = [
       StreamData.string(@abc, length: 8),
       StreamData.constant("-"),
@@ -21,6 +21,22 @@ defmodule ShortUUIDTest do
 
     check all(uuid <- StreamData.map(StreamData.fixed_list(uuid_generator), &Enum.join/1)) do
       assert uuid == elem(ShortUUID.decode(elem(ShortUUID.encode(uuid), 1)), 1)
+    end
+  end
+
+  test "encode!/1 raises on error" do
+    assert_raise ArgumentError, fn ->
+      ShortUUID.encode!("invalid-uuid-here")
+    end
+  end
+
+  test "decode!/1 raises on error" do
+    assert_raise ArgumentError, fn ->
+      ShortUUID.decode!("DTEETeS5R2XxjrVTZxXoJS123")
+    end
+
+    assert_raise ArgumentError, fn ->
+      ShortUUID.decode!("InvalidShortUUID")
     end
   end
 end

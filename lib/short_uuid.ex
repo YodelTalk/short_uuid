@@ -56,6 +56,23 @@ defmodule ShortUUID do
   defp encode(0, output), do: {:ok, output}
 
   @doc """
+  Encodes the given UUID into a ShortUUID. Raises in case of any errors.
+
+  ## Examples
+
+      iex> ShortUUID.encode!("64d7280f-736a-4ffa-b9c0-383f43486d0b")
+      "DTEETeS5R2XxjrVTZxXoJS"
+
+  """
+  @spec encode!(String.t()) :: String.t()
+  def encode!(input) do
+    case encode(input) do
+      {:ok, result} -> result
+      {:error, _error} -> raise ArgumentError
+    end
+  end
+
+  @doc """
   Decodes the given ShortUUID back into a UUID.
 
   ## Examples
@@ -85,6 +102,22 @@ defmodule ShortUUID do
       |> String.pad_leading(32, "0")
       |> String.downcase()
       |> format()
+    end
+  end
+
+  @doc """
+  Decodes the given ShortUUID back into a UUID. Raises in case of any errors.
+
+  ## Examples
+
+      iex> ShortUUID.decode!("DTEETeS5R2XxjrVTZxXoJS")
+      "64d7280f-736a-4ffa-b9c0-383f43486d0b"
+
+  """
+  def decode!(input) do
+    case decode(input) do
+      {:ok, result} -> result
+      {:error, _} -> raise ArgumentError
     end
   end
 
