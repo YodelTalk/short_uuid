@@ -1,14 +1,10 @@
 defmodule ShortUUID do
-  @moduledoc """
-  ShortUUID allows UUIDs to be encoded in a more URL- and user-friendly Base58 format:
+  @external_resource "README.md"
 
-      iex> ShortUUID.encode("64d7280f-736a-4ffa-b9c0-383f43486d0b")
-      {:ok, "DTEETeS5R2XxjrVTZxXoJS"}
-
-      iex> ShortUUID.decode("DTEETeS5R2XxjrVTZxXoJS")
-      {:ok, "64d7280f-736a-4ffa-b9c0-383f43486d0b"}
-
-  """
+  @moduledoc "README.md"
+             |> File.read!()
+             |> String.split("<!-- MDOC !-->")
+             |> Enum.fetch!(1)
 
   @abc ["1", "2", "3", "4", "5", "6", "7", "8", "9"] ++
          ["A", "B", "C", "D", "E", "F", "G", "H"] ++
@@ -64,6 +60,7 @@ defmodule ShortUUID do
       "DTEETeS5R2XxjrVTZxXoJS"
 
   """
+  @doc since: "2.1.0"
   @spec encode!(String.t()) :: String.t()
   def encode!(input) do
     case encode(input) do
@@ -114,6 +111,7 @@ defmodule ShortUUID do
       "64d7280f-736a-4ffa-b9c0-383f43486d0b"
 
   """
+  @doc since: "2.1.0"
   def decode!(input) do
     case decode(input) do
       {:ok, result} -> result
