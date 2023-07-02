@@ -17,6 +17,21 @@ defmodule ShortUUID do
 
   @abc_length Enum.count(@abc)
 
+  @typedoc """
+  A UUID (Universally Unique Identifier) is a 128-bit number used to uniquely identify
+  some object or entity on the internet. In its canonical form, a UUID is represented
+  by 32 lowercase hexadecimal digits, displayed in five groups separated by hyphens,
+  in the form 8-4-4-4-12 for a total of 36 characters (32 alphanumeric characters and 4 hyphens).
+  """
+  @type uuid :: binary()
+
+  @typedoc """
+  A short UUID is a more compact string representation of a UUID. It encodes the
+  exact same information but uses a larger character set. This results in a shorter
+  string for the same information.
+  """
+  @type short_uuid :: binary()
+
   @doc """
   Encodes the given UUID into a ShortUUID.
 
@@ -32,7 +47,7 @@ defmodule ShortUUID do
       {:error, :invalid_uuid}
 
   """
-  @spec encode(String.t()) :: {:ok, String.t()} | {:error, :invalid_uuid}
+  @spec encode(uuid()) :: {:ok, short_uuid()} | {:error, :invalid_uuid}
   def encode(input) when is_uuid(input) do
     input
     |> String.replace("-", "")
@@ -65,7 +80,7 @@ defmodule ShortUUID do
 
   """
   @doc since: "2.1.0"
-  @spec encode!(String.t()) :: String.t()
+  @spec encode!(uuid()) :: short_uuid()
   def encode!(input) do
     case encode(input) do
       {:ok, result} -> result
@@ -91,7 +106,7 @@ defmodule ShortUUID do
       {:error, :invalid_uuid}
 
   """
-  @spec decode(String.t()) :: {:ok, String.t()} | {:error, :invalid_uuid}
+  @spec decode(short_uuid()) :: {:ok, uuid()} | {:error, :invalid_uuid}
   def decode(input) when is_binary(input) do
     codepoints = String.codepoints(input)
 
@@ -122,6 +137,7 @@ defmodule ShortUUID do
 
   """
   @doc since: "2.1.0"
+  @spec decode!(short_uuid()) :: uuid()
   def decode!(input) do
     case decode(input) do
       {:ok, result} -> result
