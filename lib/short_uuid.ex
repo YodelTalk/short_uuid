@@ -18,6 +18,9 @@ defmodule ShortUUID do
   @doc """
   Encodes the given UUID into a ShortUUID.
 
+  The function returns a tuple `{:ok, short_uuid}` if encoding is successful. In
+  case of invalid input UUID, the function returns `{:error, :invalid_uuid}`.
+
   ## Examples
 
       iex> ShortUUID.encode("64d7280f-736a-4ffa-b9c0-383f43486d0b")
@@ -52,7 +55,10 @@ defmodule ShortUUID do
   defp encode(0, output), do: {:ok, output}
 
   @doc """
-  Encodes the given UUID into a ShortUUID. Raises in case of any errors.
+  Encodes the given UUID into a ShortUUID.
+
+  This function works similarly to `encode/1`, but instead of returning an error
+  tuple, it raises `ArgumentError` in case of an invalid UUID.
 
   ## Examples
 
@@ -71,6 +77,9 @@ defmodule ShortUUID do
 
   @doc """
   Decodes the given ShortUUID back into a UUID.
+
+  The function returns a tuple `{:ok, uuid}` if decoding is successful. In case
+  of invalid input ShortUUID, the function returns `{:error, :invalid_uuid}`.
 
   ## Examples
 
@@ -103,7 +112,10 @@ defmodule ShortUUID do
   end
 
   @doc """
-  Decodes the given ShortUUID back into a UUID. Raises in case of any errors.
+  Decodes the given ShortUUID back into a UUID.
+
+  This function works similarly to `decode/1`, but instead of returning an error
+  tuple, it raises `ArgumentError` in case of an invalid ShortUUID.
 
   ## Examples
 

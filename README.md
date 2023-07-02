@@ -2,8 +2,16 @@
 
 <!-- MDOC !-->
 
-ShortUUID allows UUIDs to be encoded in [a more URL- and user-friendly Base58
-format](https://github.com/bitcoin/bitcoin/blob/08a7316c144f9f2516db8fa62400893f4358c5ae/src/base58.h#L6-L13):
+An Elixir module for handling ShortUUIDs.
+
+This module provides functions to encode and decode between regular UUIDs and ShortUUIDs.
+
+It can be especially useful when you want to use UUIDs, but you need them to be shorter.
+For example, you can use ShortUUIDs in URL shorteners or for a more user-friendly representation of UUIDs.
+
+Inspired by [bitcoin](https://github.com/bitcoin/bitcoin/blob/08a7316c144f9f2516db8fa62400893f4358c5ae/src/base58.h#L6-L13).
+
+## Examples
 
 ```elixir
 iex> ShortUUID.encode("64d7280f-736a-4ffa-b9c0-383f43486d0b")
