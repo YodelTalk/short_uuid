@@ -1,7 +1,7 @@
 defmodule ShortUUID.MixProject do
   use Mix.Project
 
-  @version "2.1.0"
+  @version "2.1.1"
   @url "https://github.com/YodelTalk/short_uuid"
   @maintainers ["Mario Uher"]
 
@@ -18,7 +18,11 @@ defmodule ShortUUID.MixProject do
       # Docs
       name: "ShortUUID",
       source_url: @url,
-      docs: [main: "ShortUUID"]
+      docs: [
+        main: "ShortUUID",
+        api_reference: false,
+        extras: ["README.md", "LICENSE"]
+      ]
     ]
   end
 
@@ -44,7 +48,7 @@ defmodule ShortUUID.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_doc, "~> 0.23.0", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.29.4", only: :dev, runtime: false},
       {:stream_data, "~> 0.5.0", only: :test}
     ]
   end

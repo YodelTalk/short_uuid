@@ -1,4 +1,6 @@
 defmodule ShortUUID do
+  import ShortUUID.Guards
+
   @external_resource "README.md"
 
   @moduledoc "README.md"
@@ -15,8 +17,26 @@ defmodule ShortUUID do
 
   @abc_length Enum.count(@abc)
 
+  @typedoc """
+  A UUID (Universally Unique Identifier) is a 128-bit number used to uniquely identify
+  some object or entity on the internet. In its canonical form, a UUID is represented
+  by 32 lowercase hexadecimal digits, displayed in five groups separated by hyphens,
+  in the form 8-4-4-4-12 for a total of 36 characters (32 alphanumeric characters and 4 hyphens).
+  """
+  @type uuid :: binary()
+
+  @typedoc """
+  A short UUID is a more compact string representation of a UUID. It encodes the
+  exact same information but uses a larger character set. This results in a shorter
+  string for the same information.
+  """
+  @type short_uuid :: binary()
+
   @doc """
   Encodes the given UUID into a ShortUUID.
+
+  The function returns a tuple `{:ok, short_uuid}` if encoding is successful. In
+  case of invalid input UUID, the function returns `{:error, :invalid_uuid}`.
 
   ## Examples
 
@@ -27,19 +47,15 @@ defmodule ShortUUID do
       {:error, :invalid_uuid}
 
   """
-  @spec encode(String.t()) :: {:ok, String.t()} | {:error, :invalid_uuid}
-  def encode(input) when is_binary(input) do
-    case input do
-      <<_a::64, ?-, _b::32, ?-, _c::32, ?-, _d::32, ?-, _e::96>> ->
-        input
-        |> String.replace("-", "")
-        |> String.to_integer(16)
-        |> encode("")
-
-      _ ->
-        {:error, :invalid_uuid}
-    end
+  @spec encode(uuid()) :: {:ok, short_uuid()} | {:error, :invalid_uuid}
+  def encode(input) when is_uuid(input) do
+    input
+    |> String.replace("-", "")
+    |> String.to_integer(16)
+    |> encode("")
   end
+
+  def encode(_), do: {:error, :invalid_uuid}
 
   defp encode(input, output) when input > 0 do
     index = rem(input, @abc_length)
@@ -52,7 +68,10 @@ defmodule ShortUUID do
   defp encode(0, output), do: {:ok, output}
 
   @doc """
-  Encodes the given UUID into a ShortUUID. Raises in case of any errors.
+  Encodes the given UUID into a ShortUUID.
+
+  This function works similarly to `encode/1`, but instead of returning an error
+  tuple, it raises `ArgumentError` in case of an invalid UUID.
 
   ## Examples
 
@@ -61,7 +80,7 @@ defmodule ShortUUID do
 
   """
   @doc since: "2.1.0"
-  @spec encode!(String.t()) :: String.t()
+  @spec encode!(uuid()) :: short_uuid()
   def encode!(input) do
     case encode(input) do
       {:ok, result} -> result
@@ -71,6 +90,9 @@ defmodule ShortUUID do
 
   @doc """
   Decodes the given ShortUUID back into a UUID.
+
+  The function returns a tuple `{:ok, uuid}` if decoding is successful. In case
+  of invalid input ShortUUID, the function returns `{:error, :invalid_uuid}`.
 
   ## Examples
 
@@ -84,7 +106,7 @@ defmodule ShortUUID do
       {:error, :invalid_uuid}
 
   """
-  @spec decode(String.t()) :: {:ok, String.t()} | {:error, :invalid_uuid}
+  @spec decode(short_uuid()) :: {:ok, uuid()} | {:error, :invalid_uuid}
   def decode(input) when is_binary(input) do
     codepoints = String.codepoints(input)
 
@@ -103,7 +125,10 @@ defmodule ShortUUID do
   end
 
   @doc """
-  Decodes the given ShortUUID back into a UUID. Raises in case of any errors.
+  Decodes the given ShortUUID back into a UUID.
+
+  This function works similarly to `decode/1`, but instead of returning an error
+  tuple, it raises `ArgumentError` in case of an invalid ShortUUID.
 
   ## Examples
 
@@ -112,6 +137,7 @@ defmodule ShortUUID do
 
   """
   @doc since: "2.1.0"
+  @spec decode!(short_uuid()) :: uuid()
   def decode!(input) do
     case decode(input) do
       {:ok, result} -> result

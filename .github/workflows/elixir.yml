@@ -4,45 +4,47 @@ on:
   pull_request:
   push:
     branches:
-      - master
+      - main
   repository_dispatch:
 
 jobs:
   test:
-    runs-on: ubuntu-16.04
     env:
       MIX_ENV: test
     strategy:
-      fail-fast: false
       matrix:
         include:
-          - pair:
-              elixir: 1.7.x
-              otp: 19.x
-          - pair:
-              elixir: 1.11.x
-              otp: 23.x
-            lint: lint
+          - elixir: 1.7
+            otp: 20
+            runs-on: ubuntu-20.04
+          - elixir: 1.11
+            otp: 23
+            runs-on: ubuntu-20.04
+          - elixir: 1.15
+            otp: 26
+            runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.runs-on }}
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - uses: erlef/setup-beam@v1
         with:
-          otp-version: ${{matrix.pair.otp}}
-          elixir-version: ${{matrix.pair.elixir}}
-
-      - name: Install Dependencies
-        run: mix deps.get --only test
-
+          otp-version: ${{matrix.otp}}
+          elixir-version: ${{matrix.elixir}}
+      - uses: actions/cache/restore@v3
+        with:
+          path: deps
+          key: ${{ matrix.elixir }}-mix-${{ hashFiles('/mix.lock') }}
+      - run: mix deps.get
+      - uses: actions/cache/save@v3
+        with:
+          path: deps
+          key: ${{ matrix.elixir }}-mix-${{ hashFiles('/mix.lock') }}
+      - run: mix deps.unlock --check-unused
+        if: ${{ matrix.elixir != 1.7 }}
       - run: mix format --check-formatted
-        if: ${{ matrix.lint }}
-
-      - run: mix deps.get && mix deps.unlock --check-unused
-        if: ${{ matrix.lint }}
-
-      - run: mix deps.compile
-
+        if: ${{ matrix.elixir != 1.7 }}
       - run: mix compile --warnings-as-errors
-        if: ${{ matrix.lint }}
-
       - run: mix test
+        if: ${{ matrix.elixir != 1.15 }}
+      - run: mix test --warnings-as-errors
+        if: ${{ matrix.elixir == 1.15 }}
