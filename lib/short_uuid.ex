@@ -1,4 +1,6 @@
 defmodule ShortUUID do
+  import ShortUUID.Guards
+
   @external_resource "README.md"
 
   @moduledoc "README.md"
@@ -31,18 +33,14 @@ defmodule ShortUUID do
 
   """
   @spec encode(String.t()) :: {:ok, String.t()} | {:error, :invalid_uuid}
-  def encode(input) when is_binary(input) do
-    case input do
-      <<_a::64, ?-, _b::32, ?-, _c::32, ?-, _d::32, ?-, _e::96>> ->
-        input
-        |> String.replace("-", "")
-        |> String.to_integer(16)
-        |> encode("")
-
-      _ ->
-        {:error, :invalid_uuid}
-    end
+  def encode(input) when is_uuid(input) do
+    input
+    |> String.replace("-", "")
+    |> String.to_integer(16)
+    |> encode("")
   end
+
+  def encode(_), do: {:error, :invalid_uuid}
 
   defp encode(input, output) when input > 0 do
     index = rem(input, @abc_length)
